@@ -1,168 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoftPlus - Secure Notes</title>
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-        h1, h2 { color: #58a6ff; }
-        input, textarea, button {
-            width: 100%;
-            margin-bottom: 12px;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #30363d;
-            background: #0d1117;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #238636;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover { background-color: #2ea043; }
-        .note-card {
-            background: #21262d;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            border-left: 4px solid #58a6ff;
-        }
-        .hidden { display: none; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SoftPlus</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#090d12;--panel:#111720;--line:#26303d;--text:#f3f5f7;--muted:#9ca7b5;--gold:#d6a84b;--gold2:#f0c86a;--danger:#ef6b73}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#151b25,#090d12 45%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}.app{min-height:100vh;display:flex}.side{width:245px;border-left:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;background:#0b1016}.brand{font-size:24px;font-weight:900;color:var(--gold2);margin:5px 8px 35px}.nav button{display:block;width:100%;text-align:right;background:transparent;color:var(--muted);border:0;padding:12px 13px;border-radius:11px;margin:4px 0}.nav button.active,.nav button:hover{background:#171e28;color:var(--text)}.sync{margin-top:30px;color:#7f8b9a;font-size:12px;border-top:1px solid var(--line);padding:15px 8px;line-height:1.8}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#56c58a;margin-left:6px}.main{flex:1;max-width:1300px;margin:auto;padding:26px;width:100%}.top{display:flex;gap:10px;align-items:center}.search{flex:1}.search input,.field input,.field textarea,.auth input{width:100%;background:#0d131b;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px;outline:none}.add,.primary{background:var(--gold);color:#17120a;border:0;border-radius:12px;padding:12px 16px;font-weight:900}.secondary{background:#202834;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 14px}.title{display:flex;justify-content:space-between;align-items:end;margin:28px 0 14px}h1{margin:0;font-size:30px}.title p{margin:6px 0 0;color:var(--muted)}.filters{display:flex;gap:8px;overflow:auto;padding-bottom:10px}.filter{border:1px solid var(--line);background:#111720;color:var(--muted);padding:8px 12px;border-radius:999px;white-space:nowrap}.filter.active{background:#2b2416;color:var(--gold2);border-color:#6b5425}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:15px}.card{background:linear-gradient(180deg,#131a23,#0d131a);border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 12px 28px #0005}.pic{width:100%;aspect-ratio:1.25;object-fit:cover;background:#171d26}.body{padding:13px}.row{display:flex;justify-content:space-between;gap:8px;align-items:center}.name{font-weight:900;font-size:17px}.code{color:var(--gold2);background:#24232a;border:1px solid #3b3540;padding:4px 8px;border-radius:8px;font-size:12px;white-space:nowrap}.meta{color:var(--muted);font-size:12px;margin-top:8px}.actions{display:flex;gap:8px;margin-top:12px}.actions button{flex:1;border:1px solid var(--line);background:#141a22;color:var(--text);padding:9px;border-radius:10px}.actions .edit{color:var(--gold2)}.actions .del{color:var(--danger)}.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 10px;border:1px dashed var(--line);border-radius:16px}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}.box{width:min(540px,100%);max-height:92vh;overflow:auto;background:#111720;border:1px solid var(--line);border-radius:20px;padding:20px}.box h2{margin-top:0}.field{margin:12px 0}.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}.field textarea{min-height:100px;resize:vertical}.preview{width:100%;height:170px;object-fit:cover;border-radius:12px;background:#0b1017;border:1px dashed var(--line);margin-bottom:8px}.modal-actions{display:flex;gap:10px;margin-top:16px}.modal-actions button{flex:1}.authWrap{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.authWrap.show{display:flex}.auth{width:min(430px,100%);background:#111720;border:1px solid var(--line);border-radius:20px;padding:22px}.auth h2{margin-top:0}.auth p{color:var(--muted);font-size:13px;line-height:1.7}.authActions{display:flex;gap:8px;margin-top:15px}.userbar{display:flex;align-items:center;gap:8px;margin-top:15px}.hidden{display:none!important}.privateNote{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.privateNote strong{font-size:12px;color:var(--gold2)}.privateText{color:#cbd2db;font-size:13px;white-space:pre-wrap;margin-top:5px}
+@media(max-width:760px){.app{display:block}.side{width:auto;height:auto;position:sticky;top:0;z-index:3;display:flex;align-items:center;padding:9px 12px;border-left:0;border-bottom:1px solid var(--line)}.brand{padding:8px;margin:0;font-size:20px}.nav,.sync{display:none}.main{padding:15px}.top{flex-wrap:wrap}.search{order:2;flex-basis:100%}.add{flex:1}.title h1{font-size:24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{border-radius:13px}.body{padding:9px}.name{font-size:14px}.actions button{padding:7px;font-size:12px}}
+</style>
 </head>
 <body>
+<div class="app">
+<aside class="side">
+<div class="brand">⬡ SoftPlus</div>
+<div class="nav"><button class="active">⌂ الرئيسية</button><button>▦ المجموعات</button><button>◇ العلامات</button><button>♡ المفضلة</button><button id="loginNav">⚙ دخول الإدارة</button></div>
+<div class="sync"><span class="dot"></span>متصل بقاعدة البيانات<br><small>المحتوى المشترك محفوظ بأمان</small></div>
+</aside>
+<main class="main">
+<div class="top"><div class="search"><input id="search" placeholder="ابحث بالاسم أو الكود..."></div><button class="add hidden" id="addBtn">＋ إضافة خانة</button></div>
+<div class="userbar"><small id="userStatus">وضع المشاهدة — سجّل الدخول لكتابة ملاحظتك الخاصة</small><button class="secondary hidden" id="loginBtn">تسجيل الدخول</button><button class="secondary hidden" id="logoutBtn">تسجيل الخروج</button></div>
+<div class="title"><div><h1>الرئيسية</h1><p>جميع عناصر مجموعتك في مكان واحد</p></div><div id="count" style="color:var(--muted)"></div></div>
+<div class="filters" id="filters"></div><section class="grid" id="grid"></section>
+</main></div>
 
-<div class="container">
-    <h1>SoftPlus - الملاحظات الخاصة</h1>
+<div class="modal" id="itemModal"><div class="box"><h2 id="modalTitle">إضافة عنصر</h2>
+<div class="field"><label>الصورة</label><img id="preview" class="preview" alt=""><input id="image" type="file" accept="image/*"></div>
+<div class="field"><label>الاسم</label><input id="name" placeholder="مثلاً: كاميرا رقمية"></div>
+<div class="field"><label>الكود</label><input id="code" placeholder="مثلاً: B224"></div>
+<div class="field"><label>التصنيف</label><input id="category" placeholder="مثلاً: إلكترونيات"></div>
+<div class="modal-actions"><button class="secondary" id="cancelItem">إلغاء</button><button class="primary" id="saveItem">حفظ</button></div>
+</div></div>
 
-    <!-- قسم تسجيل الدخول -->
-    <div id="auth-section">
-        <h2>تسجيل الدخول / إنشاء حساب</h2>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="signUp()">إنشاء حساب</button>
-        <button onclick="signIn()" style="background-color: #1f6beb;">تسجيل الدخول</button>
-    </div>
+<div class="modal" id="noteModal"><div class="box"><h2>ملاحظتي الخاصة</h2><p style="color:var(--muted);font-size:13px">هذه الملاحظة مرتبطة بحسابك فقط، ولا تظهر للمستخدمين الآخرين.</p><div class="field"><label id="noteItemName">العنصر</label><textarea id="privateNoteInput" placeholder="اكتب ملاحظتك الخاصة..."></textarea></div><div class="modal-actions"><button class="secondary" id="cancelNote">إلغاء</button><button class="primary" id="saveNote">حفظ الملاحظة</button></div></div></div>
 
-    <!-- قسم الملاحظات -->
-    <div id="notes-section" class="hidden">
-        <button onclick="signOut()" style="background-color: #da3633;">تسجيل الخروج</button>
-        <h2>إضافة ملاحظة جديدة</h2>
-        <input type="text" id="note-title" placeholder="عنوان الملاحظة">
-        <textarea id="note-content" placeholder="محتوى الملاحظة..."></textarea>
-        <button onclick="addNote()">حفظ الملاحظة</button>
-
-        <h2>ملاحظاتي الحالية</h2>
-        <div id="notes-list">جاري تحميل الملاحظات...</div>
-    </div>
-</div>
+<div class="authWrap" id="authWrap"><div class="auth"><h2>تسجيل الدخول</h2><p>المشاهدة متاحة للجميع. تسجيل الدخول مطلوب فقط لإدارة المحتوى أو حفظ ملاحظتك الخاصة.</p>
+<div class="field"><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="email"></div>
+<div class="field"><label>كلمة المرور</label><input id="password" type="password" autocomplete="current-password"></div>
+<div class="authActions"><button class="secondary" id="closeAuth">إلغاء</button><button class="primary" id="signIn">دخول</button></div>
+<div style="margin-top:12px"><button class="secondary" style="width:100%" id="signUp">إنشاء حساب جديد</button></div>
+<div id="authMsg" style="margin-top:12px;color:var(--gold2);font-size:13px"></div></div></div>
 
 <script>
-    // ضع مفاتيح Supabase الخاصة بك هنا
-    const SUPABASE_URL = "https://YOUR_SUPABASE_PROJECT_ID.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-    
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function signUp() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const { error } = await db.auth.signUp({ email, password });
-        if (error) alert(error.message);
-        else alert("تم إنشاء الحساب! تحقق من بريدك أو قم بتسجيل الدخول.");
-    }
-
-    async function signIn() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const { error } = await db.auth.signInWithPassword({ email, password });
-        if (error) alert(error.message);
-        else checkUser();
-    }
-
-    async function signOut() {
-        await db.auth.signOut();
-        checkUser();
-    }
-
-    async function checkUser() {
-        const { data: { user } } = await db.auth.getUser();
-        if (user) {
-            document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('notes-section').classList.remove('hidden');
-            fetchNotes();
-        } else {
-            document.getElementById('auth-section').classList.remove('hidden');
-            document.getElementById('notes-section').classList.add('hidden');
-        }
-    }
-
-    async function fetchNotes() {
-        const { data, error } = await db.from('private_notes').select('*');
-        const listDiv = document.getElementById('notes-list');
-        listDiv.innerHTML = '';
-        if (error) {
-            listDiv.innerHTML = 'حدث خطأ أثناء جلب الملاحظات.';
-            return;
-        }
-        if (data.length === 0) {
-            listDiv.innerHTML = 'لا توجد ملاحظات حالياً.';
-            return;
-        }
-        data.forEach(note => {
-            const card = document.createElement('div');
-            card.className = 'note-card';
-            card.innerHTML = `<h3>${note.title || 'بدون عنوان'}</h3><p>${note.content || ''}</p>`;
-            listDiv.appendChild(card);
-        });
-    }
-
-    async function addNote() {
-        const title = document.getElementById('note-title').value;
-        const content = document.getElementById('note-content').value;
-        const { data: { user } } = await db.auth.getUser();
-
-        if (!user) return;
-
-        const { error } = await db.from('private_notes').insert([
-            { title: title, content: content, user_id: user.id }
-        ]);
-
-        if (error) {
-            alert("خطأ: " + error.message);
-        } else {
-            document.getElementById('note-title').value = '';
-            document.getElementById('note-content').value = '';
-            fetchNotes();
-        }
-    }
-
-    // التحقق من حالة التسجيل عند تحميل الصفحة
-    checkUser();
+const SUPABASE_URL = "https://adqzyiemtguqonbxqboy.supabase.co";
+const SUPABASE_KEY = "sb_publishable_EWJ4nqbv-dwi5oPFKfkUKg_zlD4GaTG";
+const sb = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const fallback="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640"><rect width="100%" height="100%" fill="#171d26"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#f2bd55" font-size="44">صورة العنصر</text></svg>`);
+const $=id=>document.getElementById(id);
+let items=[],notes={},active="الكل",editing=null,pendingImage="",currentNoteItem=null,isAdmin=false,currentUser=null;
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+async function loadItems(){const {data,error}=await sb.from("items").select("*").order("created_at",{ascending:false});if(error){console.error(error);$("grid").innerHTML='<div class="empty">تعذر تحميل البيانات. تأكد من تنفيذ setup.sql في Supabase.</div>';return}items=data||[];render()}
+async function loadNotes(){notes={};if(!currentUser){render();return}const {data,error}=await sb.from("private_notes").select("item_id,note").eq("user_id",currentUser.id);if(!error)for(const n of(data||[]))notes[n.item_id]=n.note;render()}
+async function loadProfile(){isAdmin=false;if(!currentUser)return;const {data}=await sb.from("profiles").select("role").eq("id",currentUser.id).maybeSingle();isAdmin=data?.role==="admin"}
+function renderFilters(){const cats=["الكل",...new Set(items.map(x=>x.category).filter(Boolean))];$("filters").innerHTML=cats.map(c=>`<button class="filter ${c===active?"active":""}" onclick='active=${JSON.stringify(c)};render()'>${esc(c)}</button>`).join("")}
+function render(){const q=$("search").value.trim().toLowerCase();const shown=items.filter(x=>(active==="الكل"||x.category===active)&&((x.name+" "+x.code+" "+x.category).toLowerCase().includes(q)));$("count").textContent=`${shown.length} عنصر`;$("grid").innerHTML=shown.length?shown.map(x=>`<article class="card"><img class="pic" src="${x.image||fallback}" alt=""><div class="body"><div class="row"><div class="name">${esc(x.name)}</div><div class="code">${esc(x.code)}</div></div><div class="meta">${esc(x.category||"أخرى")}</div><div class="privateNote"><strong>🔒 ملاحظتي الخاصة</strong><div class="privateText">${notes[x.id]?esc(notes[x.id]):"لا توجد ملاحظة محفوظة"}</div></div><div class="actions"><button class="noteBtn" onclick="openNote('${x.id}')">📝 ملاحظتي</button>${isAdmin?`<button class="edit" onclick="openItem('${x.id}')">✎ تعديل</button><button class="del" onclick="removeItem('${x.id}')">حذف</button>`:""}</div></div></article>`).join(""):'<div class="empty">لا توجد عناصر مطابقة للبحث.</div>';renderFilters();$("addBtn").classList.toggle("hidden",!isAdmin)}
+async function refreshUser(){const {data}=await sb.auth.getUser();currentUser=data.user||null;await loadProfile();if(currentUser){$("userStatus").textContent=(isAdmin?"وضع الإدارة — ":"وضع المستخدم — ")+currentUser.email;$("loginBtn").classList.add("hidden");$("logoutBtn").classList.remove("hidden")}else{$("userStatus").textContent="وضع المشاهدة — سجّل الدخول لكتابة ملاحظتك الخاصة";$("loginBtn").classList.remove("hidden");$("logoutBtn").classList.add("hidden")}render();await loadNotes()}
+function openAuth(){$("authMsg").textContent="";$("authWrap").classList.add("show")}function closeAuth(){$("authWrap").classList.remove("show")}
+$("loginBtn").onclick=openAuth;$("loginNav").onclick=openAuth;$("closeAuth").onclick=closeAuth;
+$("signIn").onclick=async()=>{const email=$("email").value.trim(),password=$("password").value;if(!email||!password){$("authMsg").textContent="أدخل البريد وكلمة المرور.";return}const {error}=await sb.auth.signInWithPassword({email,password});$("authMsg").textContent=error?error.message:"تم تسجيل الدخول.";if(!error){closeAuth();await refreshUser()}}
+$("signUp").onclick=async()=>{const email=$("email").value.trim(),password=$("password").value;if(!email||password.length<6){$("authMsg").textContent="أدخل بريدًا صحيحًا وكلمة مرور من 6 أحرف على الأقل.";return}const {data,error}=await sb.auth.signUp({email,password});if(error){$("authMsg").textContent=error.message;return}$("authMsg").textContent=data.session?"تم إنشاء الحساب وتسجيل الدخول.":"تم إنشاء الحساب. إذا طُلب تأكيد البريد، افتح رسالة التأكيد ثم سجّل الدخول."}
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();await refreshUser()};sb.auth.onAuthStateChange(()=>refreshUser());
+$("search").addEventListener("input",render);$("addBtn").onclick=()=>openItem();$("cancelItem").onclick=()=>$("itemModal").classList.remove("show");
+$("image").addEventListener("change",async e=>{const f=e.target.files[0];if(f){pendingImage=await fileToDataURL(f);$("preview").src=pendingImage}});
+function openItem(id=null){if(!isAdmin){openAuth();return}editing=id;const x=id?items.find(v=>v.id===id):null;$("modalTitle").textContent=x?"تعديل عنصر":"إضافة عنصر";$("name").value=x?.name||"";$("code").value=x?.code||"";$("category").value=x?.category||"";pendingImage=x?.image||"";$("preview").src=pendingImage||fallback;$("image").value="";$("itemModal").classList.add("show")}
+$("saveItem").onclick=async()=>{if(!isAdmin)return;const payload={name:$("name").value.trim(),code:$("code").value.trim(),category:$("category").value.trim()||"أخرى",image:pendingImage||null};if(!payload.name||!payload.code){alert("أدخل الاسم والكود أولاً");return}const res=editing?await sb.from("items").update(payload).eq("id",editing):await sb.from("items").insert(payload);if(res.error){alert("لم يتم الحفظ: "+res.error.message);return}$("itemModal").classList.remove("show");editing=null;await loadItems()}
+async function removeItem(id){if(!isAdmin)return;if(!confirm("هل تريد حذف هذا العنصر؟"))return;const {error}=await sb.from("items").delete().eq("id",id);if(error)alert("تعذر الحذف: "+error.message);else await loadItems()}
+function openNote(id){if(!currentUser){openAuth();return}currentNoteItem=items.find(x=>x.id===id);$("noteItemName").textContent=currentNoteItem?.name||"العنصر";$("privateNoteInput").value=notes[id]||"";$("noteModal").classList.add("show")}
+$("cancelNote").onclick=()=>$("noteModal").classList.remove("show");
+$("saveNote").onclick=async()=>{if(!currentUser||!currentNoteItem)return;const note=$("privateNoteInput").value.trim();const result=await sb.from("private_notes").upsert({user_id:currentUser.id,item_id:currentNoteItem.id,note},{onConflict:"user_id,item_id"});if(result.error){alert("تعذر حفظ الملاحظة: "+result.error.message);return}$("noteModal").classList.remove("show");await loadNotes()};
+(async()=>{await refreshUser();await loadItems()})();
 </script>
-
-</body>
-</html>
+</body></html>
