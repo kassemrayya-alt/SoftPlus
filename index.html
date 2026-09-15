@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>SoftPlus</title>
+<style>
+:root{--bg:#09090b;--panel:#111114;--panel2:#17171b;--line:#29292e;--gold:#d8b36a;--gold2:#f0d18f;--text:#f5f3ee;--muted:#9b9aa0;--danger:#e87979}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#211a0d 0,transparent 30%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+aside{border-left:1px solid var(--line);padding:26px 18px;background:rgba(12,12,15,.9);position:sticky;top:0;height:100vh}
+.brand{font-size:25px;font-weight:800;letter-spacing:.5px;margin-bottom:32px;color:var(--gold2)}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:5px}
+nav button{width:100%;border:0;background:transparent;color:var(--muted);text-align:right;padding:13px 14px;border-radius:12px;margin:4px 0}
+nav button.active,nav button:hover{background:#1a1813;color:var(--gold2)}
+main{padding:28px;max-width:1450px;width:100%;margin:auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}
+h1{margin:0;font-size:30px} .sub{color:var(--muted);font-size:13px;margin-top:6px}
+.add{border:1px solid #9d7a39;background:linear-gradient(135deg,#d8b36a,#9f7834);color:#0b0b0b;border-radius:13px;padding:12px 18px;font-weight:800;box-shadow:0 8px 25px #0008}
+.toolbar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.search{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:13px 15px;border-radius:13px;outline:none}
+.search:focus{border-color:#80632f}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:9px 13px}.chip.active{border-color:#85662f;color:var(--gold2);background:#19160f}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:16px}
+.card{background:linear-gradient(180deg,#151519,#0f0f12);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 15px 35px #0004;transition:.2s}
+.card:hover{transform:translateY(-2px);border-color:#4c4029}.pic{height:190px;background:#0b0b0d;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:cover}.placeholder{font-size:45px;color:#4c4b50}
+.body{padding:16px}.name{font-size:18px;font-weight:750}.code{font-size:12px;color:var(--gold);margin-top:5px}.note{font-size:13px;color:var(--muted);margin:12px 0;min-height:38px;white-space:pre-wrap}
+.actions{display:flex;gap:8px}.actions button{flex:1;border:1px solid var(--line);background:#19191d;color:#ddd;padding:9px;border-radius:10px}.actions .del{color:#eaa0a0}
+.empty{display:none;text-align:center;color:var(--muted);padding:60px 15px;border:1px dashed var(--line);border-radius:18px}
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}
+.dialog{width:min(560px,100%);background:#111114;border:1px solid #383126;border-radius:20px;padding:20px;box-shadow:0 30px 80px #000}
+.dialog h2{margin:0 0 18px}.field{margin:12px 0}.field label{display:block;color:#b8b6bb;font-size:12px;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;background:#0b0b0e;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px;outline:none}.field textarea{min-height:100px;resize:vertical}
+.preview{height:150px;border:1px dashed #49433a;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:8px}.preview img{width:100%;height:100%;object-fit:cover}
+.footer-actions{display:flex;gap:10px;margin-top:18px}.footer-actions button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:#19191d;color:#ddd}.footer-actions .save{background:linear-gradient(135deg,#d8b36a,#a27a36);color:#090909;border-color:#a27a36;font-weight:800}
+.mobilebar{display:none}
+.stat{display:flex;gap:8px;margin-bottom:18px}.statbox{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 16px}.statbox b{color:var(--gold2);font-size:20px}.statbox span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+@media(max-width:800px){.app{display:block}aside{display:none}main{padding:18px 14px 90px}.top{align-items:flex-start}.top h1{font-size:25px}.add{padding:10px 13px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.pic{height:145px}.body{padding:12px}.name{font-size:15px}.note{font-size:12px}.actions button{font-size:12px;padding:8px}.mobilebar{display:flex;position:fixed;bottom:0;left:0;right:0;background:#101012eF;border-top:1px solid var(--line);backdrop-filter:blur(15px);padding:10px;z-index:8;gap:8px}.mobilebar button{flex:1;background:transparent;border:0;color:var(--muted);font-size:12px}.mobilebar .active{color:var(--gold2)}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside><div class="brand">SoftPlus<small>Premium Catalog</small></div>
+<nav><button class="active">⌂ الرئيسية</button><button id="navAdd">＋ إضافة عنصر</button><button id="navExport">⇩ تصدير البيانات</button><button id="navImport">⇧ استيراد البيانات</button></nav></aside>
+<main>
+<div class="top"><div><h1>كتالوج SoftPlus</h1><div class="sub">نظّم عناصرَك بطريقة أنيقة وسريعة</div></div><button class="add" id="addBtn">＋ إضافة خانة</button></div>
+<div class="stat"><div class="statbox"><b id="count">0</b><span>إجمالي العناصر</span></div></div>
+<div class="toolbar"><input id="search" class="search" placeholder="ابحث بالاسم أو الكود أو الملاحظة…"></div>
+<div id="chips" class="chips" style="margin-bottom:18px"></div>
+<div id="grid" class="grid"></div><div id="empty" class="empty">لا توجد عناصر مطابقة للبحث.</div>
+</main>
+</div>
+<div class="mobilebar"><button class="active">⌂ الرئيسية</button><button id="mobileAdd">＋ إضافة</button><button id="mobileExport">⇩ تصدير</button></div>
+
+<div class="modal" id="modal"><div class="dialog">
+<h2 id="modalTitle">إضافة عنصر</h2>
+<div class="field"><label>الصورة</label><input id="image" type="file" accept="image/*"><div class="preview" id="preview"><span class="placeholder">＋</span></div></div>
+<div class="field"><label>الاسم</label><input id="name" maxlength="120" placeholder="اسم العنصر"></div>
+<div class="field"><label>الكود</label><input id="code" maxlength="60" placeholder="مثال: SP-001"></div>
+<div class="field"><label>التصنيف</label><input id="category" maxlength="50" placeholder="مثال: أجهزة"></div>
+<div class="field"><label>الملاحظة</label><textarea id="note" maxlength="500" placeholder="اكتب ملاحظة داخل البطاقة…"></textarea></div>
+<div class="footer-actions"><button id="cancel">إلغاء</button><button class="save" id="save">حفظ العنصر</button></div>
+</div></div>
+<input id="importFile" type="file" accept=".json" hidden>
+<script>
+const KEY="softplus-web-v1";
+let items=JSON.parse(localStorage.getItem(KEY)||"[]"), editing=null, imageData="";
+const $=id=>document.getElementById(id);
+function saveStore(){localStorage.setItem(KEY,JSON.stringify(items))}
+function escapeHtml(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function openModal(item=null){editing=item?.id||null; imageData=item?.image||"";$("modalTitle").textContent=item?"تعديل العنصر":"إضافة عنصر";$("name").value=item?.name||"";$("code").value=item?.code||"";$("category").value=item?.category||"";$("note").value=item?.note||"";$("image").value="";renderPreview();$("modal").classList.add("show");setTimeout(()=>$("name").focus(),50)}
+function closeModal(){$("modal").classList.remove("show")}
+function renderPreview(){$("preview").innerHTML=imageData?`<img src="${imageData}" alt="">`:`<span class="placeholder">＋</span>`}
+$("image").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas"),max=1000,scale=Math.min(1,max/Math.max(im.width,im.height));c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);c.getContext("2d").drawImage(im,0,0,c.width,c.height);imageData=c.toDataURL("image/jpeg",.82);renderPreview()};im.src=r.result};r.readAsDataURL(f)})
+function render(){const q=$("search").value.trim().toLowerCase(), cats=[...new Set(items.map(x=>x.category).filter(Boolean))];$("chips").innerHTML=`<button class="chip active" data-cat="">الكل</button>`+cats.map(c=>`<button class="chip" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join("");let activeCat="";document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeCat=b.dataset.cat;draw(q,activeCat)});draw(q,activeCat);$("count").textContent=items.length}
+function draw(q="",cat=""){const filtered=items.filter(x=>(!cat||x.category===cat)&&(!q||[x.name,x.code,x.note,x.category].join(" ").toLowerCase().includes(q)));$("grid").innerHTML=filtered.map(x=>`<article class="card"><div class="pic">${x.image?`<img src="${x.image}" alt="">`:`<span class="placeholder">◈</span>`}</div><div class="body"><div class="name">${escapeHtml(x.name)}</div><div class="code">${escapeHtml(x.code||"بدون كود")}${x.category?` · ${escapeHtml(x.category)}`:""}</div><div class="note">${escapeHtml(x.note||"لا توجد ملاحظة")}</div><div class="actions"><button data-edit="${x.id}">✎ تعديل</button><button class="del" data-del="${x.id}">حذف</button></div></div></article>`).join("");$("empty").style.display=filtered.length?"none":"block";document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openModal(items.find(x=>x.id===b.dataset.edit)));document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("هل تريد حذف هذا العنصر؟")){items=items.filter(x=>x.id!==b.dataset.del);saveStore();render()}})}
+function add(){openModal()}
+$("addBtn").onclick=add;$("navAdd").onclick=add;$("mobileAdd").onclick=add;$("cancel").onclick=closeModal;$("modal").onclick=e=>{if(e.target===$("modal"))closeModal()};$("search").oninput=render;
+$("save").onclick=()=>{const name=$("name").value.trim();if(!name){alert("اكتب اسم العنصر أولاً");$("name").focus();return}const obj={id:editing||crypto.randomUUID(),name,code:$("code").value.trim(),category:$("category").value.trim(),note:$("note").value.trim(),image:imageData};if(editing)items=items.map(x=>x.id===editing?obj:x);else items.unshift(obj);saveStore();closeModal();render()}
+function exportData(){const blob=new Blob([JSON.stringify(items)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="softplus-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+$("navExport").onclick=exportData;$("mobileExport").onclick=exportData;$("navImport").onclick=()=>$("importFile").click();$("importFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d))throw 0;items=d;saveStore();render();alert("تم استيراد البيانات بنجاح")}catch{alert("ملف غير صالح")}};r.readAsText(f);e.target.value=""};
+render();
+</script>
+</body>
+</html>
